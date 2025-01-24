@@ -22,7 +22,7 @@ module.exports = {
         name: 'Devfolio 2',
         description:
           'A zero-config and blazing fast personal site + blog built with GatsbyJs and TailwindCSS',
-        link: 'https://github.com/RyanFitzgerald/devfolio',
+        link: 'https://github.com/edefikh',
       },
       {
         name: 'ChromeExtensionKit',
