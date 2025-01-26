@@ -1,100 +1,60 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A simple website hosted on GitHub Pages">
+  <title>My GitHub Pages Site</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+      color: #333;
+    }
+    header {
+      background-color: #0078d7;
+      color: white;
+      padding: 1rem 0;
+      text-align: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+    }
+    main {
+      padding: 2rem;
+      text-align: center;
+    }
+    footer {
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 1rem 0;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+    a {
+      color: #0078d7;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
 <body>
-<h1>Below are some areas of expertise and tools that can be used to assist with Security and Compliance projects.
-Security Infrastructure Design and Implementation
-Objective: Build and deploy security systems to protect the organization's IT environment.
-Tasks:
-Design and configure firewalls, intrusion detection/prevention systems (IDS/IPS), and virtual private networks (VPNs).
-Implement endpoint security tools like antivirus and EDR (Endpoint Detection and Response).
-Deploy multi-factor authentication (MFA) for user access.
-Setup Azure tenant with recommended settings, conditional access ( example here https://github.com/edefikh/grc/blob/main/ConditionalAccess.ps1 ) , screen lock (https://github.com/edefikh/grc/blob/main/screenlock.ps1 ) , USB write restriction, MDM Intune baseline setup, malware and Antivirus setup and integration
-Data Labeling and classification in MS Suite and Gsuite, labels classification and encryption settings
-SSO setup Password management tools like 1Password and Lastpass
-Backup strategies in Cloud and OnPrem, storage and data retention
-Business Continuity/ Disaster Recovery planning and testing
-Defender for Identity, endpoint and cloud setup and optimization
-Risk analysis, risk register creation and automation, Cyber Insurance review and improvement
-Tools/Technologies: Cisco ASA, Palo Alto Networks, Fortinet, CrowdStrike, Okta, Cisco Umbrella, MS Defender, DarkWeb monitoring, Wazuh ( Open Source SIEM tool) 
-Vulnerability Assessment and Penetration Testing (VAPT)
-Objective: Identify and remediate vulnerabilities in systems, networks, and applications.
-Tasks:
-Conduct vulnerability scans using tools like Nessus or Qualys.
-Perform penetration testing to exploit potential weaknesses.
-Work with developers or IT teams to patch and remediate vulnerabilities.
-Static and Dynamic code analysis, assistance with fixes
-docker image scanning
-Tools/Technologies: Metasploit, Burp Suite, OWASP ZAP, Kali Linux., Tenable Suite including Tenable.io and Essential free product, OpenVAS (free), Intruder.io for pentest, cobalt.io for paid pentest, automox for patching, AWS ECR reposcans, GitHub Security tools, dependencies scanner, Checkmarx for DAST, Vulnerability management on Azure
-Incident Response and Forensics
-Objective: Detect, investigate, and respond to security incidents.
-Tasks:
-Monitor security alerts from SIEM (Security Information and Event Management) systems.
-Lead the investigation of breaches or suspicious activities.
-Dark Web monitoring
-Prepare incident response playbooks and conduct post-incident reviews.
-Tools/Technologies: Splunk, ELK Stack, Carbon Black, Wireshark., CloudTrail, AWS Inspector, AWS Security Hub, MS Defender, Azure Security Center, Microsoft Purview(eDiscovery), Azure logs, Sentinel, SumoLogic
-Security Policy and Standards Development
-Objective: Create and enforce security policies, procedures, and standards.
-Tasks:
-Develop policies for password management, data classification, and acceptable use.
-Ensure alignment with frameworks like NIST, ISO 27001, or CIS Controls., FedRamp, NIST 800-53
-Conduct employee awareness training on security policies.
-Assist clients with Cookies consent forms and Privacy policy related work as it applies to opt-in out of marketing campaigns and emails
-Assist HR with onboarding and offboarding tasks automations and integrations with tools like Rippling, Gusto
-Examples: Writing data retention policies, implementing device encryption policies. Using GRC tools like OneTrust and TrustCloud/Vanta/Drata to organize policies/procedures/controls for audit
-Cloud Security Configuration and Management
-Objective: Secure cloud-based resources and services.
-Tasks:
-Set up identity and access management (IAM) roles in AWS, Azure, or GCP.
-Implement encryption for data at rest and in transit.
-Configure logging and monitoring tools in the cloud environment.
-Assist DevOps and IT with system hardening baselines, patching and monitoring, terraform assistance
-User access review automation using tools like Zilla Security and Tines automation
-Infrastructure-as-Code setup, Jira change management work, sprint planning and setup, Agile process education (OWASP top 10 )
-Tools/Technologies: AWS CloudTrail, Azure Security Center, HashiCorp Vault.
-Secure Software Development Lifecycle (SDLC) Support
-Objective: Integrate security into software development workflows.
-Tasks:
-Perform code reviews to identify vulnerabilities.
-Implement DevSecOps practices using CI/CD pipelines.
-Support developers in using secure coding practices.
-Tools/Technologies: GitHub Security, Snyk, Veracode, Jenkins.
-Compliance and Audit Preparation
-Objective: Ensure systems comply with regulatory requirements and standards.
-Tasks:
-Conduct risk assessments and prepare risk treatment plans.
-Assist in audits for frameworks like SOC 2, HIPAA, PCI-DSS, or GDPR.
-Document and maintain evidence for compliance reviews.
-Tools/Technologies: ServiceNow GRC, LogicGate, RSA Archer.
-Threat Intelligence and Security Awareness
-Objective: Proactively identify and mitigate evolving threats.
-Tasks:
-Monitor threat intelligence feeds to stay updated on the latest risks.
-Implement phishing simulation campaigns.
-Create security awareness training materials for employees.
-Examples: Training users on email hygiene or social engineering attacks, Knowbe4, Insperity, free tools
-Network Security Monitoring and Hardening
-Objective: Improve network security and monitor for anomalies.
-Tasks:
-Configure and monitor security devices like firewalls and switches.
-Implement network segmentation and zero-trust architecture.
-Analyze network traffic for suspicious activities.
-Tools/Technologies: SolarWinds, Zeek, pfSense.
-Business Continuity and Disaster Recovery (BC/DR)
-Objective: Ensure systems and data can recover after an incident.
-Tasks:
-Design and test disaster recovery plans.
-Implement backup solutions and perform recovery drills.
-Ensure high availability of critical systems.
-Examples: Testing failover for cloud services or on-premises data recovery.
-Encryption and PKI Management
-Objective: Secure sensitive data through encryption and certificate management.
-Tasks:
-Manage public key infrastructure (PKI) and digital certificates.
-Configure encryption for databases, emails, and file storage.
-Implement HTTPS across all websites and applications.
-Tools/Technologies: OpenSSL, Let’s Encrypt, AWS KMS.
-</h1>
-<p>I'm hosted with GitHub Pages.</p>
+  <header>
+    <h1>Welcome to My GitHub Pages Site</h1>
+  </header>
+  <main>
+    <p>Hello, world! This is a simple website hosted on GitHub Pages.</p>
+    <p>You can edit this file to customize your site. Check out the <a href="https://pages.github.com/" target="_blank">GitHub Pages documentation</a> to learn more.</p>
+  </main>
+  <footer>
+    <p>Created with ❤️ by <a href="https://github.com/your-username" target="_blank">Your Name</a></p>
+  </footer>
 </body>
 </html>
