@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microsoft 365 Security Copilot Agent Guide</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        .container {
+            max-width: 900px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        pre {
+            background: #272822;
+            color: #f8f8f2;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        code {
+            font-family: "Courier New", Courier, monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Microsoft 365 Security Copilot Agent Guide</h1>
+        
+        <h2>🔹 Overview: What This Security Copilot Agent Does</h2>
+        <ul>
+            <li>✅ Enforces MFA & Conditional Access</li>
+            <li>✅ Monitors risky sign-ins & auto-disables compromised accounts</li>
+            <li>✅ Alerts security teams via Microsoft Teams & Power Automate</li>
+            <li>✅ Detects & revokes externally shared sensitive files</li>
+            <li>✅ Provides an AI-powered security chatbot in Teams</li>
+        </ul>
+
+        <h2>📌 Step 1: Install Required Tools & Modules</h2>
+        <h3>🔧 1.1 Install PowerShell Modules</h3>
+        <pre><code>Install-Module Microsoft.Graph -Scope CurrentUser -Force
+Install-Module ExchangeOnlineManagement -Scope CurrentUser -Force</code></pre>
+        
+        <h3>🔧 1.2 Connect to Microsoft Graph API</h3>
+        <pre><code>Connect-MgGraph -Scopes "User.Read.All", "AuditLog.Read.All", "Directory.ReadWrite.All", "SecurityEvents.Read.All"</code></pre>
+        
+        <h3>🔧 1.3 Connect to Exchange Online</h3>
+        <pre><code>Connect-ExchangeOnline -UserPrincipalName admin@yourdomain.com</code></pre>
+        
+        <h2>📌 Step 2: Automate Identity Security</h2>
+        <h3>🔹 2.1 Enforce MFA for All Users</h3>
+        <pre><code>$users = Get-MgUser -All | Where-Object { $_.StrongAuthenticationMethods.Count -eq 0 }
+if ($users.Count -eq 0) {
+    Write-Host "✅ All users have MFA enabled!"
+} else {
+    Write-Host "⚠️ Users without MFA:"
+    $users | ForEach-Object { Write-Host "$($_.DisplayName) - $($_.UserPrincipalName)" }
+    
+    # Send Email Reminder
+    foreach ($user in $users) {
+        Send-MailMessage -To $user.UserPrincipalName -From "security@yourdomain.com" -Subject "Enable MFA Now" -Body "Your account requires MFA. Please enable it." -SmtpServer "smtp.office365.com"
+    }
+}</code></pre>
+
+        <h3>🔹 2.2 Detect & Disable Compromised Users</h3>
+        <pre><code>$highRiskSignIns = Get-MgAuditLogSignIn -Filter "riskLevel eq 'high'" -Top 10
+foreach ($signIn in $highRiskSignIns) {
+    Write-Host "⚠️ High-Risk Sign-In Detected: $($signIn.UserDisplayName) from $($signIn.Location)"
+    
+    # Disable Compromised Account
+    Set-MgUser -UserId $signIn.UserId -AccountEnabled $false
+    Write-Host "❌ Disabled user: $($signIn.UserDisplayName)"
+    
+    # Send Email Alert
+    Send-MailMessage -To "securityteam@yourdomain.com" -Subject "High-Risk Sign-In Alert" -Body "User $($signIn.UserDisplayName) was disabled due to high-risk sign-in from $($signIn.Location)." -SmtpServer "smtp.office365.com"
+}</code></pre>
+
+        <h2>📌 Step 3: Automate Threat Detection with Power Automate</h2>
+        <h3>🔹 3.1 Create a Power Automate Flow for Teams Alerts</h3>
+        <p>1️⃣ Go to <a href="https://flow.microsoft.com/">Power Automate</a></p>
+        <p>2️⃣ Create a new flow → Select "Automated cloud flow"</p>
+        <p>3️⃣ Trigger: "Azure AD Identity Protection → Risky Sign-ins detected"</p>
+        <p>4️⃣ Action: "Post a message in Microsoft Teams"</p>
+        <pre><code>🚨 High-Risk Sign-In Detected! 🚨
+User: @{triggerOutputs()?['body/userPrincipalName']}
+Location: @{triggerOutputs()?['body/location']}
+Risk Level: @{triggerOutputs()?['body/riskLevel']}</code></pre>
+
+        <h2>📌 Step 4: Detect & Revoke External File Sharing</h2>
+        <pre><code># Get externally shared files
+$sites = Get-MgSite -All
+foreach ($site in $sites) {
+    $files = Get-MgDriveItem -SiteId $site.Id -ExpandProperty Permissions | Where-Object {
+        $_.Permissions | Where-Object { $_.Link.Scope -eq "anonymous" -or $_.Link.Scope -eq "organization" }
+    }
+    
+    foreach ($file in $files) {
+        Write-Host "🚨 Shared File: $($file.Name) - $($file.WebUrl)"
+        Remove-MgDriveItemPermission -DriveId $file.ParentReference.DriveId -ItemId $file.Id
+        Write-Host "❌ Revoked access: $($file.Name)"
+    }
+}</code></pre>
+
+        <h2>🚀 Summary: Why This Security Copilot Agent?</h2>
+        <ul>
+            <li>✔ Automatically secures Microsoft 365 (Office 365) tenant</li>
+            <li>✔ Detects threats in real-time & responds instantly</li>
+            <li>✔ Alerts security teams via Teams, Power Automate, and Sentinel</li>
+            <li>✔ Uses AI to automate security insights & reporting</li>
+        </ul>
+    </div>
+</body>
+</html>
