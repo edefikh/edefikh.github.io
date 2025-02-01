@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Managing DevSecOps in Production</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #28a745; /* Green background */
+            color: white;
+        }
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+            color: black;
+        }
+        h1 {
+            background-color: #218838;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            border-radius: 5px;
+        }
+        h2 {
+            color: #218838;
+            margin-top: 20px;
+            border-bottom: 3px solid #218838;
+            padding-bottom: 5px;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        ul li {
+            padding: 8px 0;
+            font-size: 16px;
+        }
+        ul li::before {
+            content: "✔"; 
+            color: #218838;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        .sub-list {
+            margin-left: 20px;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 14px;
+            text-align: center;
+            color: white;
+        }
+        .icon {
+            font-weight: bold;
+            color: #218838;
+        }
+        .highlight {
+            background: #e9ffe9;
+            padding: 10px;
+            border-left: 5px solid #218838;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Managing DevSecOps in Production</h1>
+        <p>DevSecOps in production involves not just deploying code but ensuring that the entire pipeline and the running applications remain secure, compliant, and continuously monitored for any potential threats or vulnerabilities.</p>
+        
+        <div class="highlight">
+            <p><strong>Why is this important?</strong> By carefully managing DevSecOps in production, organizations can ensure that their applications remain secure, compliant, and resilient against potential threats. This requires:</p>
+            <ul>
+                <li>Proactive monitoring</li>
+                <li>Adherence to compliance standards</li>
+                <li>A well-prepared response plan for incidents</li>
+            </ul>
+        </div>
+
+        <h2>🔍 Monitoring and Managing the DevSecOps Pipeline</h2>
+        <ul>
+            <li><span class="icon">🔄</span> <strong>Pipeline monitoring:</strong> Ensure all security checks in the CI/CD pipeline are executed properly.</li>
+            <li><span class="icon">📡</span> <strong>Runtime monitoring:</strong> Continuously monitor applications for unauthorized access or abnormal behavior.</li>
+            <li><span class="icon">🔁</span> <strong>Feedback loops:</strong> Provide immediate feedback to developers and operations teams.</li>
+        </ul>
+
+        <h2>🛠 Open Source Tools for Monitoring, Logging, and Alerting</h2>
+        <h3>📊 Monitoring:</h3>
+        <ul class="sub-list">
+            <li><strong>Prometheus:</strong> Open-source system monitoring & alerting toolkit.</li>
+            <li><strong>Grafana:</strong> Visualization and observability platform.</li>
+        </ul>
+
+        <h3>📜 Logging:</h3>
+        <ul class="sub-list">
+            <li><strong>ELK Stack:</strong> Search, analyze, and visualize log data.</li>
+            <li><strong>Graylog:</strong> Advanced log management platform.</li>
+        </ul>
+
+        <h3>🔔 Alerting:</h3>
+        <ul class="sub-list">
+            <li><strong>ElastAlert:</strong> Easy alerting for Elasticsearch.</li>
+            <li><strong>Alertmanager:</strong> Handles alerts from monitoring tools.</li>
+        </ul>
+
+        <h2>📜 Incorporating Continuous Compliance and Auditing</h2>
+        <ul>
+            <li><strong>Automated compliance checks:</strong> Ensure security as code moves through the pipeline.</li>
+            <li><strong>Open source compliance tools:</strong></li>
+            <ul class="sub-list">
+                <li><strong>OpenSCAP:</strong> Security baseline assessment tool.</li>
+                <li><strong>Inspec:</strong> Infrastructure compliance testing framework.</li>
+            </ul>
+            <li><strong>Regular audits:</strong> Perform periodic security reviews to ensure compliance.</li>
+        </ul>
+
+        <h2>🚨 Managing Incidents & Responding to Security Breaches</h2>
+        <ul>
+            <li><span class="icon">📄</span> <strong>Incident response plan:</strong> A documented and practiced plan for handling security incidents.</li>
+            <li><strong>Open source incident management tools:</strong></li>
+            <ul class="sub-list">
+                <li><strong>TheHive:</strong> Scalable incident response platform.</li>
+                <li><strong>Wazuh:</strong> Host-based security monitoring.</li>
+            </ul>
+            <li><span class="icon">📢</span> <strong>Communication:</strong> Clear notification plan for stakeholders.</li>
+            <li><span class="icon">🔍</span> <strong>Post-incident analysis:</strong> Perform root cause analysis to prevent future breaches.</li>
+        </ul>
+
+        <div class="footer">
+            <p>&copy; 2025 FZ Business Group Inc. | DevSecOps & Security Management</p>
+        </div>
+    </div>
+</body>
+</html>
