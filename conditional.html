@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disable Legacy Authentication Office 365</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            color: green;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Disable Legacy Authentication Office 365</h1>
+    <pre>
+Connect-MgGraph -Scopes "Policy.Read.All",  
+"Policy.ReadWrite.ConditionalAccess", 
+"Application.Read.All"
+
+$conditions = @{ 
+Applications = @{   
+includeApplications = 'All' 
+};
+Users = @{ 
+includeUsers = 'All' 
+};
+ClientAppTypes = @( 
+'ExchangeActiveSync',
+'Other'
+);   
+}  
+  
+$grantcontrols = @{ 
+BuiltInControls = @('Block'); 
+Operator = 'OR' 
+}
+
+$name = "Block Legacy Authentication All Apps"  
+$state = "Enabled"  
+  
+New-MgIdentityConditionalAccessPolicy `  
+-DisplayName $name  
+-State $state   
+-Conditions $conditions  
+-GrantControls $grantcontrols
+    </pre>
+</body>
+</html>
