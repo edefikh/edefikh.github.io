@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Azure Infrastructure as Code Setup</title>
+    <title>Azure Infrastructure as Code (IaC) Setup</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,7 +15,7 @@
         }
         code {
             background-color: #ddd;
-            padding: 5px;
+            padding: 10px;
             display: block;
             white-space: pre-wrap;
             border-left: 5px solid #4CAF50;
@@ -33,65 +33,95 @@
 
 <div class="container">
     <h2>1. Set Up Azure Environment</h2>
-    <p>Ensure the Azure subscription is active and install the necessary PowerShell modules.</p>
+    <p>Ensure the Azure CLI and PowerShell modules are installed and authenticated.</p>
     <code>
+        # Install Azure PowerShell module
         Install-Module -Name Az -AllowClobber -Force
+
+        # Authenticate to Azure
         Connect-AzAccount
-        Select-AzSubscription -SubscriptionId &lt;YourSubscriptionId&gt;
+
+        # Select the appropriate subscription
+        Select-AzSubscription -SubscriptionId "YourSubscriptionID"
     </code>
 
-    <h2>2. Define Infrastructure as Code (IaC) Using PowerShell</h2>
-    <p>Create a script to deploy Azure resources like Virtual Machines, Storage, and Networking.</p>
+    <h2>2. Define Infrastructure as Code (IaC) Using ARM Templates</h2>
+    <p>Azure Resource Manager (ARM) templates define infrastructure in JSON format.</p>
     <code>
-        # Create a Resource Group
-        New-AzResourceGroup -Name "MyResourceGroup" -Location "EastUS"
-
-        # Deploy a Virtual Machine
-        New-AzVM -ResourceGroupName "MyResourceGroup" -Name "MyVM" -Location "EastUS"
+        {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": [
+            {
+              "type": "Microsoft.Resources/resourceGroups",
+              "apiVersion": "2021-04-01",
+              "location": "East US",
+              "properties": {}
+            }
+          ]
+        }
     </code>
 
-    <h2>3. Use GitHub Copilot to Automate Script Writing</h2>
-    <p>Enable GitHub Copilot in Visual Studio Code to suggest optimized PowerShell commands.</p>
+    <h2>3. Deploy ARM Template Using Azure PowerShell</h2>
+    <p>Deploy the infrastructure by running the following PowerShell command.</p>
     <code>
-        # Type a comment to describe the task
-        # Copilot suggests the command automatically
-        # Example: Create a Storage Account
-        New-AzStorageAccount -ResourceGroupName "MyResourceGroup" -Name "mystorageaccount" -SkuName "Standard_LRS" -Location "EastUS"
+        New-AzResourceGroupDeployment -ResourceGroupName "MyResourceGroup" -TemplateFile "azuredeploy.json"
     </code>
 
-    <h2>4. Store and Version Control Scripts in GitHub</h2>
-    <p>Push the PowerShell scripts to a GitHub repository for version control.</p>
+    <h2>4. Define Infrastructure Using Bicep (Alternative to ARM)</h2>
+    <p>Bicep is a more readable declarative language for ARM templates.</p>
     <code>
-        git init
-        git add .
-        git commit -m "Initial Infrastructure as Code setup"
-        git push origin main
+        param location string = 'East US'
+
+        resource myResourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
+          name: 'MyResourceGroup'
+          location: location
+        }
     </code>
 
-    <h2>5. Automate Deployment with GitHub Actions</h2>
-    <p>Set up a GitHub Actions workflow to execute PowerShell scripts automatically.</p>
+    <h2>5. Deploy Bicep Files Using Azure CLI</h2>
+    <p>Convert and deploy Bicep files to Azure.</p>
     <code>
-        name: Azure Deployment
-        on: push
+        az deployment group create --resource-group MyResourceGroup --template-file main.bicep
+    </code>
+
+    <h2>6. Automate Deployment Using Azure DevOps Pipelines</h2>
+    <p>Use Azure DevOps to automate deployments through CI/CD pipelines.</p>
+    <code>
+        trigger:
+          - main
+
         jobs:
-          deploy:
-            runs-on: ubuntu-latest
+          - job: DeployInfra
+            pool:
+              vmImage: 'ubuntu-latest'
+
             steps:
-              - uses: actions/checkout@v3
-              - name: Run PowerShell script
-                run: pwsh -File deploy.ps1
+              - task: AzureResourceManagerTemplateDeployment@3
+                inputs:
+                  deploymentScope: 'Resource Group'
+                  resourceGroupName: 'MyResourceGroup'
+                  location: 'East US'
+                  templateLocation: 'Linked artifact'
+                  csmFile: 'azuredeploy.json'
     </code>
 
-    <h2>6. Verify Deployment and Grant Access</h2>
-    <p>Check the deployed resources and grant necessary permissions.</p>
+    <h2>7. Enforce Compliance Using Azure Blueprints</h2>
+    <p>Use Azure Blueprints to enforce security and governance policies.</p>
+    <code>
+        New-AzBlueprintAssignment -Name "MyBlueprint" -BlueprintName "SecurityBlueprint" -ResourceGroup "MyResourceGroup"
+    </code>
+
+    <h2>8. Validate and Monitor Deployment</h2>
+    <p>Ensure that the resources were deployed successfully.</p>
     <code>
         Get-AzResourceGroup -Name "MyResourceGroup"
-        New-AzRoleAssignment -ObjectId &lt;UserID&gt; -RoleDefinitionName "Contributor"
     </code>
 
-    <h2>7. Handoff and Documentation</h2>
-    <p>Provide the client with documentation and access credentials.</p>
+    <h2>9. Document and Handoff to Client</h2>
+    <p>Provide the client with detailed documentation and access credentials.</p>
 </div>
 
 </body>
 </html>
+
