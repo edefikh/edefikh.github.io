@@ -48,18 +48,29 @@
     <h2>2. Define Infrastructure as Code (IaC) Using ARM Templates</h2>
     <p>Azure Resource Manager (ARM) templates define infrastructure in JSON format.</p>
     <code>
+    {
+      "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+      "contentVersion": "1.0.0.0",
+      "resources": [
         {
-          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-          "contentVersion": "1.0.0.0",
-          "resources": [
-            {
-              "type": "Microsoft.Resources/resourceGroups",
-              "apiVersion": "2021-04-01",
-              "location": "East US",
-              "properties": {}
-            }
-          ]
+          "type": "Microsoft.Resources/resourceGroups",
+          "apiVersion": "2021-04-01",
+          "name": "[parameters('resourceGroupName')]",
+          "location": "East US",
+          "properties": {}
         }
+      ],
+      "parameters": {
+        "resourceGroupName": {
+          "type": "string",
+          "defaultValue": "MyResourceGroup",
+          "metadata": {
+            "description": "The name of the resource group to create"
+          }
+        }
+      }
+    }
+
     </code>
 
     <h2>3. Deploy ARM Template Using Azure PowerShell</h2>
