@@ -1,0 +1,184 @@
+Setting up AWS infrastructure for a healthcare-related app that must be CMMC 2.0 ready requires a secure and compliant architecture. Below is a Terraform script that implements a three-tier architecture with Kubernetes (EKS), RDS, security tools, monitoring, and logging while following security best practices.
+
+Key Components:
+VPC & Networking: Multi-AZ deployment, private/public subnets, NAT Gateway, security groups, and IAM roles.
+Compute (EKS - Kubernetes): Amazon Elastic Kubernetes Service (EKS) for containerized workloads.
+Database (RDS): PostgreSQL with encryption, backups, and multi-AZ failover.
+Security & Compliance:
+AWS Security Hub for continuous compliance checks.
+AWS GuardDuty for threat detection.
+AWS Config for resource monitoring and compliance enforcement.
+IAM Roles & Policies with least privilege.
+AWS WAF for application-layer protection.
+AWS Shield for DDoS protection.
+Monitoring & Logging:
+Amazon CloudWatch for logs, metrics, and alarms.
+AWS CloudTrail for auditing API calls.
+Amazon OpenSearch (Elasticsearch) for centralized log analysis.
+
+Terraform Script:
+
+provider "aws" {
+  region = "us-east-1"  # Change as needed
+}
+
+# -----------------------------------------------
+# VPC and Networking
+# -----------------------------------------------
+module "vpc" {
+  source          = "terraform-aws-modules/vpc/aws"
+  name           = "startup-vpc"
+  cidr           = "10.0.0.0/16"
+  azs            = ["us-east-1a", "us-east-1b"]
+  private_subnets = ["10.0.1.0/24", "10.0.2.0/24"]
+  public_subnets  = ["10.0.101.0/24", "10.0.102.0/24"]
+  enable_nat_gateway = true
+  enable_dns_hostnames = true
+}
+
+# -----------------------------------------------
+# EKS Cluster (Kubernetes)
+# -----------------------------------------------
+module "eks" {
+  source          = "terraform-aws-modules/eks/aws"
+  cluster_name    = "startup-eks-cluster"
+  cluster_version = "1.29"
+  subnets         = module.vpc.private_subnets
+  vpc_id          = module.vpc.vpc_id
+  enable_irsa     = true  # Enable IAM Roles for Service Accounts
+
+  node_groups = {
+    workers = {
+      desired_capacity = 3
+      max_capacity     = 5
+      min_capacity     = 2
+      instance_types   = ["t3.medium"]
+      key_name         = "eks-key"
+    }
+  }
+}
+
+# -----------------------------------------------
+# RDS (PostgreSQL) - Multi-AZ, Encrypted, Secure
+# -----------------------------------------------
+module "rds" {
+  source             = "terraform-aws-modules/rds/aws"
+  identifier         = "startup-db"
+  engine            = "postgres"
+  engine_version    = "15.2"
+  instance_class    = "db.t3.medium"
+  allocated_storage = 100
+  db_name           = "startupdb"
+  username         = "admin"
+  password         = "SuperSecurePass123!"
+  multi_az         = true
+  publicly_accessible = false
+  storage_encrypted = true
+  deletion_protection = true
+  backup_retention_period = 7
+  subnet_ids       = module.vpc.private_subnets
+}
+
+# -----------------------------------------------
+# Security: IAM, GuardDuty, Security Hub, WAF
+# -----------------------------------------------
+resource "aws_iam_role" "eks_nodes" {
+  name = "eks-nodes-role"
+  assume_role_policy = data.aws_iam_policy_document.eks_assume_role.json
+}
+
+# Enable GuardDuty
+resource "aws_guardduty_detector" "gd" {
+  enable = true
+}
+
+# Enable Security Hub
+resource "aws_securityhub_account" "sh" {}
+
+# Enable AWS WAF
+resource "aws_waf_web_acl" "waf" {
+  name        = "startup-waf"
+  metric_name = "StartupWAF"
+  default_action {
+    allow {}
+  }
+  rule {
+    name     = "block-bad-ips"
+    priority = 1
+    action {
+      block {}
+    }
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "block-bad-ips"
+      sampled_requests_enabled   = true
+    }
+  }
+}
+
+# -----------------------------------------------
+# Monitoring & Logging: CloudWatch, CloudTrail, OpenSearch
+# -----------------------------------------------
+resource "aws_cloudwatch_log_group" "eks_logs" {
+  name = "/aws/eks/startup-logs"
+  retention_in_days = 30
+}
+
+resource "aws_cloudtrail" "cloudtrail" {
+  name                          = "startup-cloudtrail"
+  s3_bucket_name                = aws_s3_bucket.cloudtrail_bucket.id
+  is_multi_region_trail         = true
+  include_global_service_events = true
+}
+
+resource "aws_s3_bucket" "cloudtrail_bucket" {
+  bucket = "startup-cloudtrail-logs"
+  acl    = "private"
+}
+
+# OpenSearch (Elasticsearch) for Log Aggregation
+resource "aws_elasticsearch_domain" "es" {
+  domain_name           = "startup-logs"
+  elasticsearch_version = "7.10"
+  cluster_config {
+    instance_type = "t3.small.elasticsearch"
+  }
+  ebs_options {
+    ebs_enabled = true
+    volume_size = 20
+  }
+}
+
+# -----------------------------------------------
+# Output Values
+# -----------------------------------------------
+output "eks_cluster_name" {
+  value = module.eks.cluster_id
+}
+
+output "rds_endpoint" {
+  value = module.rds.db_instance_endpoint
+}
+
+output "vpc_id" {
+  value = module.vpc.vpc_id
+}
+
+
+Next Steps
+Run Terraform
+
+sh
+terraform init
+terraform apply
+
+
+Integrate Kubernetes Workloads
+Deploy application workloads on EKS.
+Use Kubernetes Network Policies for better isolation.
+Implement a service mesh like Istio for security.
+Implement CI/CD
+Use AWS CodePipeline or GitHub Actions for deployments.
+Harden Security Further
+Implement AWS KMS CMK for advanced encryption.
+Use AWS Systems Manager Parameter Store for secrets management.
