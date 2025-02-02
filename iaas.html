@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azure Infrastructure as Code Setup</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f4f4f4;
+        }
+        h2 {
+            color: green;
+        }
+        code {
+            background-color: #ddd;
+            padding: 5px;
+            display: block;
+            white-space: pre-wrap;
+            border-left: 5px solid #4CAF50;
+            margin: 10px 0;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>1. Set Up Azure Environment</h2>
+    <p>Ensure the Azure subscription is active and install the necessary PowerShell modules.</p>
+    <code>
+        Install-Module -Name Az -AllowClobber -Force
+        Connect-AzAccount
+        Select-AzSubscription -SubscriptionId &lt;YourSubscriptionId&gt;
+    </code>
+
+    <h2>2. Define Infrastructure as Code (IaC) Using PowerShell</h2>
+    <p>Create a script to deploy Azure resources like Virtual Machines, Storage, and Networking.</p>
+    <code>
+        # Create a Resource Group
+        New-AzResourceGroup -Name "MyResourceGroup" -Location "EastUS"
+
+        # Deploy a Virtual Machine
+        New-AzVM -ResourceGroupName "MyResourceGroup" -Name "MyVM" -Location "EastUS"
+    </code>
+
+    <h2>3. Use GitHub Copilot to Automate Script Writing</h2>
+    <p>Enable GitHub Copilot in Visual Studio Code to suggest optimized PowerShell commands.</p>
+    <code>
+        # Type a comment to describe the task
+        # Copilot suggests the command automatically
+        # Example: Create a Storage Account
+        New-AzStorageAccount -ResourceGroupName "MyResourceGroup" -Name "mystorageaccount" -SkuName "Standard_LRS" -Location "EastUS"
+    </code>
+
+    <h2>4. Store and Version Control Scripts in GitHub</h2>
+    <p>Push the PowerShell scripts to a GitHub repository for version control.</p>
+    <code>
+        git init
+        git add .
+        git commit -m "Initial Infrastructure as Code setup"
+        git push origin main
+    </code>
+
+    <h2>5. Automate Deployment with GitHub Actions</h2>
+    <p>Set up a GitHub Actions workflow to execute PowerShell scripts automatically.</p>
+    <code>
+        name: Azure Deployment
+        on: push
+        jobs:
+          deploy:
+            runs-on: ubuntu-latest
+            steps:
+              - uses: actions/checkout@v3
+              - name: Run PowerShell script
+                run: pwsh -File deploy.ps1
+    </code>
+
+    <h2>6. Verify Deployment and Grant Access</h2>
+    <p>Check the deployed resources and grant necessary permissions.</p>
+    <code>
+        Get-AzResourceGroup -Name "MyResourceGroup"
+        New-AzRoleAssignment -ObjectId &lt;UserID&gt; -RoleDefinitionName "Contributor"
+    </code>
+
+    <h2>7. Handoff and Documentation</h2>
+    <p>Provide the client with documentation and access credentials.</p>
+</div>
+
+</body>
+</html>
