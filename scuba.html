@@ -22,63 +22,44 @@
 </head>
 <body>
 
-    <h2>Step 1: Download SCUBA</h2>
-    <p>SCUBA (Security Compliance Baseline Analyzer) is a tool used to inspect security configurations for Microsoft Office 365 and Azure.</p>
-    <p>Download the latest version of SCUBA from the official <a href="https://www.disa.mil/Cybersecurity/Tools/SCUBA">DISA website</a>.</p>
+    <h2>Step 1: Verify PowerShell Version</h2>
+    <p>SCUBA requires PowerShell 5.1 to function correctly. To check your PowerShell version:</p>
+    <pre><code>powershell $PSVersionTable.PSVersion</code></pre>
+    <p>If the major version is <strong>less than 5.1</strong>, you need to update PowerShell.</p>
 
-    <h2>Step 2: Install SCUBA</h2>
-    <p>After downloading the SCUBA installer:</p>
+    <h2>Step 2: Install PowerShell 5.1 (If Needed)</h2>
+    <p>If you are running an older version, follow these steps to install PowerShell 5.1:</p>
     <ol>
-        <li>Locate the downloaded <code>.zip</code> file.</li>
-        <li>Extract the contents to a secure folder.</li>
-        <li>Run the <code>setup.exe</code> file to begin installation.</li>
-        <li>Follow the on-screen instructions to complete the setup.</li>
+        <li>Download the <a href="https://www.microsoft.com/en-us/download/details.aspx?id=54616">Windows Management Framework 5.1</a>.</li>
+        <li>Run the downloaded <code>.msu</code> installer.</li>
+        <li>Restart your computer after installation.</li>
+        <li>Re-run <code>$PSVersionTable.PSVersion</code> to confirm the update.</li>
     </ol>
 
-    <h2>Step 3: Launch SCUBA</h2>
-    <p>Once installed, open SCUBA by:</p>
+    <h2>Step 3: Install SCUBA Using PowerShell 5.1</h2>
+    <p>Once the SCUBA installer is downloaded, follow these steps to install it via PowerShell:</p>
     <ol>
-        <li>Clicking on the SCUBA desktop shortcut or searching for "SCUBA" in the start menu.</li>
-        <li>Running it with administrator privileges to access full functionality.</li>
+        <li>Open PowerShell 5.1 as Administrator.</li>
+        <li>Run the installer:</li>
+        <pre><code>Set-ExecutionPolicy Unrestricted</code></pre>
+        <pre><code>Install-Module -Name ScubaGear -Force</code></pre>
+        <pre><code>Initialize-SCuBA</code></pre>
+        <pre><code>Invoke-SCuBA</code></pre>
+        <li></li>
     </ol>
 
-    <h2>Step 4: Configure SCUBA for Office 365 and Azure</h2>
-    <p>To inspect Microsoft Office 365 and Azure security configurations:</p>
-    <ol>
-        <li>Open SCUBA and navigate to the "Settings" section.</li>
-        <li>Select "Microsoft Office 365 & Azure" from the compliance options.</li>
-        <li>Enter your administrator credentials to connect SCUBA to your environment.</li>
-        <li>Customize security benchmarks if needed.</li>
-    </ol>
-
-    <h2>Step 5: Run a Security Scan</h2>
-    <p>To analyze your Office 365 and Azure configurations:</p>
-    <ol>
-        <li>Go to the "Scan" section.</li>
-        <li>Click on "Start Scan" and select Office 365 or Azure.</li>
-        <li>Wait for the analysis to complete.</li>
-        <li>Review the detailed security assessment report.</li>
-    </ol>
-
-    <h2>Step 6: Review and Address Security Findings</h2>
-    <p>SCUBA generates a report with security compliance recommendations:</p>
+    <h2>Step 4: Review and Address Security Findings</h2>
+    <p>SCUBA generates a report with security recommendations:</p>
     <ol>
         <li>Navigate to the "Reports" tab.</li>
-        <li>Identify security vulnerabilities and misconfigurations.</li>
-        <li>Follow the suggested remediation steps.</li>
-        <li>Re-run SCUBA to ensure compliance improvements.</li>
+        <li>Identify vulnerabilities and misconfigurations.</li>
+        <li>Follow the recommended remediation steps.</li>
+        <li>Re-run SCUBA to verify compliance improvements.</li>
     </ol>
 
-    <h2>Step 7: Schedule Regular Audits</h2>
-    <p>To maintain security compliance:</p>
-    <ul>
-        <li>Set up scheduled scans in SCUBA.</li>
-        <li>Monitor security changes in Office 365 and Azure.</li>
-        <li>Update SCUBA regularly for the latest security policies.</li>
-    </ul>
-
-    <h2>Conclusion</h2>
+   <h2>Conclusion</h2>
     <p>By following these steps, you can effectively use SCUBA to inspect and enhance the security of your Microsoft Office 365 and Azure environments.</p>
 
 </body>
 </html>
+
