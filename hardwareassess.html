@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hardware Risk Assessment</title>
+    <style>
+        body {
+            background-color: #d4edda; /* Light green background */
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+        }
+        h1, h2, h3 {
+            color: #155724;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #155724;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #28a745;
+            color: white;
+        }
+        .section {
+            padding: 15px;
+            border: 1px solid #155724;
+            margin-bottom: 20px;
+            background-color: #c3e6cb;
+        }
+        ul {
+            margin: 10px 0;
+        }
+        .highlight {
+            font-weight: bold;
+            color: #155724;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Hardware Risk Assessment and Mitigation Strategies</h1>
+
+    <div class="section">
+        <h2>Gen 11 HP ProLiant 1U 3 Servers - Risk Assessment</h2>
+        <table>
+            <tr>
+                <th>Risk</th>
+                <th>Risk Factors</th>
+                <th>Likelihood (1-10)</th>
+                <th>Impact (1-10)</th>
+                <th>Risk Score</th>
+            </tr>
+            <tr>
+                <td>Power supply failure</td>
+                <td>Single PSU configuration, power surges, lack of redundancy</td>
+                <td>6</td>
+                <td>8</td>
+                <td>48</td>
+            </tr>
+            <tr>
+                <td>Overheating</td>
+                <td>Insufficient cooling, high ambient temperature, dust accumulation</td>
+                <td>7</td>
+                <td>7</td>
+                <td>49</td>
+            </tr>
+            <tr>
+                <td>Disk failure</td>
+                <td>Non-redundant storage, aging disks, excessive operations</td>
+                <td>6</td>
+                <td>9</td>
+                <td>54</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>HP MSA 2060 Storage Array - Risk Assessment</h2>
+        <table>
+            <tr>
+                <th>Risk</th>
+                <th>Risk Factors</th>
+                <th>Likelihood (1-10)</th>
+                <th>Impact (1-10)</th>
+                <th>Risk Score</th>
+            </tr>
+            <tr>
+                <td>Controller failure</td>
+                <td>Single-controller configuration, firmware corruption</td>
+                <td>5</td>
+                <td>9</td>
+                <td>45</td>
+            </tr>
+            <tr>
+                <td>Disk failure</td>
+                <td>High I/O workloads, lack of RAID</td>
+                <td>6</td>
+                <td>9</td>
+                <td>54</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>Mitigation Strategies</h2>
+        <h3>1. Firmware Management</h3>
+        <ul>
+            <li><span class="highlight">Why It's Critical:</span> Outdated firmware can introduce vulnerabilities and cause compatibility issues.</li>
+            <li>Schedule firmware updates quarterly and test before deployment.</li>
+            <li>Monitor vendor announcements for security advisories.</li>
+            <li>Use HP Smart Update Manager (SUM) for automated updates.</li>
+        </ul>
+
+        <h3>2. Redundancy Enhancements</h3>
+        <ul>
+            <li><span class="highlight">Why It's Critical:</span> Single points of failure (SPOFs) increase downtime risks.</li>
+            <li>Equip servers and storage with dual PSUs.</li>
+            <li>Configure RAID 6 or RAID 10 for data redundancy.</li>
+            <li>Enable multipathing for Fiber Channel (FC) connections.</li>
+        </ul>
+
+        <h3>3. Proactive Monitoring</h3>
+        <ul>
+            <li><span class="highlight">Why It's Critical:</span> Monitoring helps detect hardware issues before failures occur.</li>
+            <li>Use HP iLO for real-time server health monitoring.</li>
+            <li>Deploy SAN monitoring tools to track disk performance.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Implementation Framework</h2>
+        <table>
+            <tr>
+                <th>Phase</th>
+                <th>Task</th>
+                <th>Owner</th>
+                <th>Timeline</th>
+            </tr>
+            <tr>
+                <td>Phase 1</td>
+                <td>Assemble team and document hardware inventory</td>
+                <td>IT Manager</td>
+                <td>Week 1</td>
+            </tr>
+            <tr>
+                <td>Phase 2</td>
+                <td>Deploy dual power supplies and configure RAID</td>
+                <td>Hardware Admin</td>
+                <td>Week 3</td>
+            </tr>
+            <tr>
+                <td>Phase 3</td>
+                <td>Update firmware and test compatibility</td>
+                <td>IT Team</td>
+                <td>Week 7</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>Risk Score Reduction</h2>
+        <table>
+            <tr>
+                <th>Component</th>
+                <th>Original Risk Score</th>
+                <th>Updated Risk Score</th>
+                <th>Reduction %</th>
+            </tr>
+            <tr>
+                <td>Gen 11 HP ProLiant</td>
+                <td>41.3</td>
+                <td>16.3</td>
+                <td>60.5%</td>
+            </tr>
+            <tr>
+                <td>HP MSA 2060</td>
+                <td>42.8</td>
+                <td>14.0</td>
+                <td>67.3%</td>
+            </tr>
+            <tr>
+                <td>Dock Cables</td>
+                <td>39.3</td>
+                <td>11.8</td>
+                <td>70.0%</td>
+            </tr>
+        </table>
+    </div>
+
+</body>
+</html>
