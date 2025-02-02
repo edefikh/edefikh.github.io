@@ -50,5 +50,55 @@ $state = "Enabled"
   
 New-MgIdentityConditionalAccessPolicy -DisplayName $name  -State $state   -Conditions $conditions  -GrantControls $grantcontrols
     </pre>
+
+div class="container">
+        <h2>🔐 PowerShell Script to Block High-Risk Users in Azure AD (Microsoft 365)</h2>
+        <p>This script will:</p>
+        <ul>
+            <li class="highlight">✅ Check for high-risk users in Azure AD</li>
+            <li class="highlight">✅ Automatically block them to prevent access</li>
+        </ul>
+        
+        <h3>🛠 Prerequisites</h3>
+        <ol>
+            <li>Install Microsoft Graph PowerShell module (if not already installed):</li>
+            <pre><code>Install-Module Microsoft.Graph -Scope CurrentUser -Force</code></pre>
+            <li>Connect to Microsoft Graph with required permissions:</li>
+            <pre><code>Connect-MgGraph -Scopes "User.ReadWrite.All", "IdentityRiskyUser.Read.All", "IdentityRiskEvent.Read.All"</code></pre>
+        </ol>
+        
+        <h3>🚀 PowerShell Script: Block High-Risk Users</h3>
+        <pre><code># Connect to Microsoft Graph (Ensure you have connected before running this)
+Connect-MgGraph -Scopes "User.ReadWrite.All", "IdentityRiskyUser.Read.All"
+
+# Get High-Risk Users
+Write-Host "`n[1] Fetching High-Risk Users..." -ForegroundColor Cyan
+$highRiskUsers = Get-MgRiskyUser | Where-Object { $_.RiskLevel -eq "high" -and $_.RiskState -eq "active" }
+
+if ($highRiskUsers) {
+    Write-Host "`nHigh-Risk Users Found! Blocking Access..." -ForegroundColor Yellow
+    
+    foreach ($user in $highRiskUsers) {
+        Write-Host "Blocking user: $($user.UserDisplayName) ($($user.UserPrincipalName))" -ForegroundColor Red
+        
+        # Block the user by setting 'AccountEnabled' to False
+        Update-MgUser -UserId $user.Id -AccountEnabled:$false
+    }
+    
+    Write-Host "`nAll high-risk users have been blocked!" -ForegroundColor Green
+} else {
+    Write-Host "`nNo high-risk users detected!" -ForegroundColor Green
+}</code></pre>
+        
+        <h3>🔎 Explanation:</h3>
+        <ol>
+            <li>Fetches all users flagged as "high risk" by Azure AD Identity Protection.</li>
+            <li>Loops through each risky user and disables their account (sets <code>AccountEnabled = $false</code>).</li>
+            <li>Logs the action and prints results.</li>
+        </ol>
+        
+        <h3>📅 Automate This Script</h3>
+        <p>Schedule it using Azure Automation or Windows Task Scheduler to run regularly.</p>
+    </div>
 </body>
 </html>
