@@ -19,7 +19,7 @@ Amazon OpenSearch (Elasticsearch) for centralized log analysis.
 Terraform Script:
 
 provider "aws" {
-  region = "us-east-1"  # Change as needed
+  region = "us-east-1"
 }
 
 # -----------------------------------------------
@@ -27,7 +27,7 @@ provider "aws" {
 # -----------------------------------------------
 module "vpc" {
   source          = "terraform-aws-modules/vpc/aws"
-  name           = "startup-vpc"
+  name           = "secure-vpc"
   cidr           = "10.0.0.0/16"
   azs            = ["us-east-1a", "us-east-1b"]
   private_subnets = ["10.0.1.0/24", "10.0.2.0/24"]
@@ -37,11 +37,24 @@ module "vpc" {
 }
 
 # -----------------------------------------------
-# EKS Cluster (Kubernetes)
+# AWS KMS for Encryption (HIPAA Requirement)
+# -----------------------------------------------
+resource "aws_kms_key" "cmk" {
+  description             = "HIPAA-Compliant Encryption Key"
+  enable_key_rotation     = true
+}
+
+resource "aws_kms_alias" "cmk_alias" {
+  name          = "alias/hipaa-compliant-key"
+  target_key_id = aws_kms_key.cmk.id
+}
+
+# -----------------------------------------------
+# EKS Cluster (Kubernetes) - HIPAA Secure
 # -----------------------------------------------
 module "eks" {
   source          = "terraform-aws-modules/eks/aws"
-  cluster_name    = "startup-eks-cluster"
+  cluster_name    = "secure-eks-cluster"
   cluster_version = "1.29"
   subnets         = module.vpc.private_subnets
   vpc_id          = module.vpc.vpc_id
@@ -54,51 +67,56 @@ module "eks" {
       min_capacity     = 2
       instance_types   = ["t3.medium"]
       key_name         = "eks-key"
+      additional_tags = {
+        "HIPAA" = "Compliant"
+      }
     }
   }
 }
 
 # -----------------------------------------------
-# RDS (PostgreSQL) - Multi-AZ, Encrypted, Secure
+# RDS (PostgreSQL) - Encrypted, Secure, Multi-AZ
 # -----------------------------------------------
 module "rds" {
   source             = "terraform-aws-modules/rds/aws"
-  identifier         = "startup-db"
+  identifier         = "secure-db"
   engine            = "postgres"
   engine_version    = "15.2"
   instance_class    = "db.t3.medium"
   allocated_storage = 100
-  db_name           = "startupdb"
+  db_name           = "securedb"
   username         = "admin"
   password         = "SuperSecurePass123!"
   multi_az         = true
   publicly_accessible = false
   storage_encrypted = true
+  kms_key_id        = aws_kms_key.cmk.id
   deletion_protection = true
-  backup_retention_period = 7
+  backup_retention_period = 14
   subnet_ids       = module.vpc.private_subnets
 }
 
 # -----------------------------------------------
-# Security: IAM, GuardDuty, Security Hub, WAF
+# Security: IAM, GuardDuty, Security Hub, WAF, Shield, Macie
 # -----------------------------------------------
-resource "aws_iam_role" "eks_nodes" {
-  name = "eks-nodes-role"
-  assume_role_policy = data.aws_iam_policy_document.eks_assume_role.json
-}
-
-# Enable GuardDuty
 resource "aws_guardduty_detector" "gd" {
   enable = true
 }
 
-# Enable Security Hub
 resource "aws_securityhub_account" "sh" {}
 
-# Enable AWS WAF
+resource "aws_macie2_account" "macie" {
+  status = "ENABLED"
+}
+
+resource "aws_config_configuration_recorder" "config" {
+  name     = "default"
+  role_arn = aws_iam_role.config_role.arn
+}
+
 resource "aws_waf_web_acl" "waf" {
-  name        = "startup-waf"
-  metric_name = "StartupWAF"
+  name        = "secure-waf"
+  metric_name = "SecureWAF"
   default_action {
     allow {}
   }
@@ -117,28 +135,37 @@ resource "aws_waf_web_acl" "waf" {
 }
 
 # -----------------------------------------------
-# Monitoring & Logging: CloudWatch, CloudTrail, OpenSearch
+# Monitoring & Logging: CloudTrail, CloudWatch, OpenSearch
 # -----------------------------------------------
 resource "aws_cloudwatch_log_group" "eks_logs" {
-  name = "/aws/eks/startup-logs"
+  name = "/aws/eks/secure-logs"
   retention_in_days = 30
 }
 
 resource "aws_cloudtrail" "cloudtrail" {
-  name                          = "startup-cloudtrail"
+  name                          = "secure-cloudtrail"
   s3_bucket_name                = aws_s3_bucket.cloudtrail_bucket.id
   is_multi_region_trail         = true
   include_global_service_events = true
+  kms_key_id                    = aws_kms_key.cmk.id
 }
 
 resource "aws_s3_bucket" "cloudtrail_bucket" {
-  bucket = "startup-cloudtrail-logs"
-  acl    = "private"
+  bucket = "secure-cloudtrail-logs"
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
-# OpenSearch (Elasticsearch) for Log Aggregation
+resource "aws_s3_bucket_versioning" "versioning" {
+  bucket = aws_s3_bucket.cloudtrail_bucket.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
 resource "aws_elasticsearch_domain" "es" {
-  domain_name           = "startup-logs"
+  domain_name           = "secure-logs"
   elasticsearch_version = "7.10"
   cluster_config {
     instance_type = "t3.small.elasticsearch"
@@ -163,6 +190,7 @@ output "rds_endpoint" {
 output "vpc_id" {
   value = module.vpc.vpc_id
 }
+
 
 
 Next Steps
