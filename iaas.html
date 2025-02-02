@@ -52,31 +52,40 @@
       "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
       "contentVersion": "1.0.0.0",
       "resources": [
-        {
-          "type": "Microsoft.Resources/resourceGroups",
-          "apiVersion": "2021-04-01",
-          "name": "[parameters('resourceGroupName')]",
-          "location": "East US",
-          "properties": {}
-        }
-      ],
+    {
+      "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+      "contentVersion": "1.0.0.0",
       "parameters": {
-        "resourceGroupName": {
+        "storageAccountName": {
           "type": "string",
-          "defaultValue": "MyResourceGroup",
+          "defaultValue": "mystorageaccount123",
           "metadata": {
-            "description": "The name of the resource group to create"
+            "description": "Name of the storage account"
           }
         }
-      }
+      },
+      "resources": [
+        {
+          "type": "Microsoft.Storage/storageAccounts",
+          "apiVersion": "2022-09-01",
+          "name": "[parameters('storageAccountName')]",
+          "location": "East US",
+          "sku": {
+            "name": "Standard_LRS"
+          },
+          "kind": "StorageV2",
+          "properties": {}
+        }
+      ]
     }
+
 
     </code>
 
     <h2>3. Deploy ARM Template Using Azure PowerShell</h2>
     <p>Deploy the infrastructure by running the following PowerShell command.</p>
     <code>
-        New-AzResourceGroupDeployment -ResourceGroupName "MyResourceGroup" -TemplateFile "azuredeploy.json"
+        New-AzResourceGroupDeployment -ResourceGroupName "copilotiaas" -TemplateFile "azuredeploy.json"
     </code>
 
     <h2>4. Define Infrastructure Using Bicep (Alternative to ARM)</h2>
