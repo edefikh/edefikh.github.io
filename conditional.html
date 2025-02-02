@@ -48,11 +48,7 @@ Operator = 'OR'
 $name = "Block Legacy Authentication All Apps"  
 $state = "Enabled"  
   
-New-MgIdentityConditionalAccessPolicy `  
--DisplayName $name  
--State $state   
--Conditions $conditions  
--GrantControls $grantcontrols
+New-MgIdentityConditionalAccessPolicy -DisplayName $name  -State $state   -Conditions $conditions  -GrantControls $grantcontrols
     </pre>
 </body>
 </html>
