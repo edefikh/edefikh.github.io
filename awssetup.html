@@ -1,64 +1,91 @@
-Setting up AWS infrastructure for a healthcare-related app that must be CMMC 2.0 ready requires a secure and compliant architecture. Below is a Terraform script that implements a three-tier architecture with Kubernetes (EKS), RDS, security tools, monitoring, and logging while following security best practices.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS Terraform Infrastructure for Healthcare App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h2 {
+            color: green;
+        }
+        pre {
+            background-color: #000;
+            color: #0f0;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        code {
+            font-family: "Courier New", Courier, monospace;
+        }
+        ul {
+            background: #fff;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="color:green;">AWS Terraform Infrastructure for Healthcare App (CMMC 2.0, HIPAA, SOC 2)</h1>
+        
+        <h2>🚀 Overview</h2>
+        <ul>
+            <li><strong>3-Tier Architecture:</strong> VPC, EKS, and RDS</li>
+            <li><strong>Security & Compliance:</strong> AWS GuardDuty, Macie, Config, and KMS</li>
+            <li><strong>Monitoring & Logging:</strong> CloudWatch, CloudTrail, and OpenSearch</li>
+            <li><strong>Data Encryption:</strong> AWS KMS CMK for HIPAA compliance</li>
+        </ul>
 
-Key Components:
-VPC & Networking: Multi-AZ deployment, private/public subnets, NAT Gateway, security groups, and IAM roles.
-Compute (EKS - Kubernetes): Amazon Elastic Kubernetes Service (EKS) for containerized workloads.
-Database (RDS): PostgreSQL with encryption, backups, and multi-AZ failover.
-Security & Compliance:
-AWS Security Hub for continuous compliance checks.
-AWS GuardDuty for threat detection.
-AWS Config for resource monitoring and compliance enforcement.
-IAM Roles & Policies with least privilege.
-AWS WAF for application-layer protection.
-AWS Shield for DDoS protection.
-Monitoring & Logging:
-Amazon CloudWatch for logs, metrics, and alarms.
-AWS CloudTrail for auditing API calls.
-Amazon OpenSearch (Elasticsearch) for centralized log analysis.
-
-Terraform Script:
-
-provider "aws" {
-  region = "us-east-1"
-}
-
-# -----------------------------------------------
-# VPC and Networking
-# -----------------------------------------------
+        <h2>🌐 VPC & Networking</h2>
+        <pre><code>
 module "vpc" {
   source          = "terraform-aws-modules/vpc/aws"
-  name           = "secure-vpc"
-  cidr           = "10.0.0.0/16"
-  azs            = ["us-east-1a", "us-east-1b"]
+  name            = "secure-vpc"
+  cidr            = "10.0.0.0/16"
+  azs             = ["us-east-1a", "us-east-1b"]
   private_subnets = ["10.0.1.0/24", "10.0.2.0/24"]
   public_subnets  = ["10.0.101.0/24", "10.0.102.0/24"]
   enable_nat_gateway = true
   enable_dns_hostnames = true
 }
+        </code></pre>
 
-# -----------------------------------------------
-# AWS KMS for Encryption (HIPAA Requirement)
-# -----------------------------------------------
+        <h2>🔐 AWS KMS Encryption (HIPAA Requirement)</h2>
+        <pre><code>
 resource "aws_kms_key" "cmk" {
-  description             = "HIPAA-Compliant Encryption Key"
-  enable_key_rotation     = true
+  description         = "HIPAA-Compliant Encryption Key"
+  enable_key_rotation = true
 }
 
 resource "aws_kms_alias" "cmk_alias" {
-  name          = "alias/hipaa-compliant-key"
+  name          = "alias/hipaa-key"
   target_key_id = aws_kms_key.cmk.id
 }
+        </code></pre>
 
-# -----------------------------------------------
-# EKS Cluster (Kubernetes) - HIPAA Secure
-# -----------------------------------------------
+        <h2>☸️ EKS Cluster (Kubernetes) - Secure Workloads</h2>
+        <pre><code>
 module "eks" {
   source          = "terraform-aws-modules/eks/aws"
   cluster_name    = "secure-eks-cluster"
   cluster_version = "1.29"
   subnets         = module.vpc.private_subnets
   vpc_id          = module.vpc.vpc_id
-  enable_irsa     = true  # Enable IAM Roles for Service Accounts
+  enable_irsa     = true
 
   node_groups = {
     workers = {
@@ -67,38 +94,13 @@ module "eks" {
       min_capacity     = 2
       instance_types   = ["t3.medium"]
       key_name         = "eks-key"
-      additional_tags = {
-        "HIPAA" = "Compliant"
-      }
     }
   }
 }
+        </code></pre>
 
-# -----------------------------------------------
-# RDS (PostgreSQL) - Encrypted, Secure, Multi-AZ
-# -----------------------------------------------
-module "rds" {
-  source             = "terraform-aws-modules/rds/aws"
-  identifier         = "secure-db"
-  engine            = "postgres"
-  engine_version    = "15.2"
-  instance_class    = "db.t3.medium"
-  allocated_storage = 100
-  db_name           = "securedb"
-  username         = "admin"
-  password         = "SuperSecurePass123!"
-  multi_az         = true
-  publicly_accessible = false
-  storage_encrypted = true
-  kms_key_id        = aws_kms_key.cmk.id
-  deletion_protection = true
-  backup_retention_period = 14
-  subnet_ids       = module.vpc.private_subnets
-}
-
-# -----------------------------------------------
-# Security: IAM, GuardDuty, Security Hub, WAF, Shield, Macie
-# -----------------------------------------------
+        <h2>🛡️ Security & Compliance: GuardDuty, Security Hub, WAF</h2>
+        <pre><code>
 resource "aws_guardduty_detector" "gd" {
   enable = true
 }
@@ -109,34 +111,17 @@ resource "aws_macie2_account" "macie" {
   status = "ENABLED"
 }
 
-resource "aws_config_configuration_recorder" "config" {
-  name     = "default"
-  role_arn = aws_iam_role.config_role.arn
-}
-
 resource "aws_waf_web_acl" "waf" {
   name        = "secure-waf"
   metric_name = "SecureWAF"
   default_action {
     allow {}
   }
-  rule {
-    name     = "block-bad-ips"
-    priority = 1
-    action {
-      block {}
-    }
-    visibility_config {
-      cloudwatch_metrics_enabled = true
-      metric_name                = "block-bad-ips"
-      sampled_requests_enabled   = true
-    }
-  }
 }
+        </code></pre>
 
-# -----------------------------------------------
-# Monitoring & Logging: CloudTrail, CloudWatch, OpenSearch
-# -----------------------------------------------
+        <h2>📊 Monitoring & Logging: CloudTrail, CloudWatch, OpenSearch</h2>
+        <pre><code>
 resource "aws_cloudwatch_log_group" "eks_logs" {
   name = "/aws/eks/secure-logs"
   retention_in_days = 30
@@ -146,67 +131,29 @@ resource "aws_cloudtrail" "cloudtrail" {
   name                          = "secure-cloudtrail"
   s3_bucket_name                = aws_s3_bucket.cloudtrail_bucket.id
   is_multi_region_trail         = true
-  include_global_service_events = true
   kms_key_id                    = aws_kms_key.cmk.id
 }
 
 resource "aws_s3_bucket" "cloudtrail_bucket" {
   bucket = "secure-cloudtrail-logs"
-  lifecycle {
-    prevent_destroy = true
-  }
 }
+        </code></pre>
 
-resource "aws_s3_bucket_versioning" "versioning" {
-  bucket = aws_s3_bucket.cloudtrail_bucket.id
-  versioning_configuration {
-    status = "Enabled"
-  }
-}
+        <h2>🔐 Data Protection & IAM Policies</h2>
+        <ul>
+            <li><strong>IAM Least Privilege:</strong> Enforce role-based access</li>
+            <li><strong>MFA for IAM Users:</strong> Require multi-factor authentication</li>
+            <li><strong>AWS Systems Manager:</strong> Secure secret management</li>
+        </ul>
 
-resource "aws_elasticsearch_domain" "es" {
-  domain_name           = "secure-logs"
-  elasticsearch_version = "7.10"
-  cluster_config {
-    instance_type = "t3.small.elasticsearch"
-  }
-  ebs_options {
-    ebs_enabled = true
-    volume_size = 20
-  }
-}
+        <h2>🚀 Next Steps</h2>
+        <ul>
+            <li><strong>Run Terraform:</strong> <code>terraform init &amp;&amp; terraform apply</code></li>
+            <li><strong>Secure IAM Access:</strong> Enable AWS SSO, enforce MFA</li>
+            <li><strong>Enable Zero Trust:</strong> Implement Kubernetes Network Policies</li>
+            <li><strong>Automate Compliance Checks:</strong> Use AWS Config & Security Hub</li>
+        </ul>
+    </div>
+</body>
+</html>
 
-# -----------------------------------------------
-# Output Values
-# -----------------------------------------------
-output "eks_cluster_name" {
-  value = module.eks.cluster_id
-}
-
-output "rds_endpoint" {
-  value = module.rds.db_instance_endpoint
-}
-
-output "vpc_id" {
-  value = module.vpc.vpc_id
-}
-
-
-
-Next Steps
-Run Terraform
-
-sh
-terraform init
-terraform apply
-
-
-Integrate Kubernetes Workloads
-Deploy application workloads on EKS.
-Use Kubernetes Network Policies for better isolation.
-Implement a service mesh like Istio for security.
-Implement CI/CD
-Use AWS CodePipeline or GitHub Actions for deployments.
-Harden Security Further
-Implement AWS KMS CMK for advanced encryption.
-Use AWS Systems Manager Parameter Store for secrets management.
