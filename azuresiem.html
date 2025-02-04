@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optimizing Azure & Office 365 Log Ingestion to SIEM</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        h2 {
+            color: green;
+        }
+        h3 {
+            color: darkgreen;
+        }
+        p {
+            color: #333;
+        }
+        ul {
+            color: #333;
+            list-style-type: square;
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Optimizing Azure & Office 365 Log Ingestion to SIEM</h2>
+    
+    <p>To balance security monitoring with cost efficiency, organizations should selectively send **critical logs** from **Azure** and **Office 365** to a **SIEM** while using techniques to minimize egress costs.</p>
+
+    <h2>Critical Azure Logs to Send to SIEM</h2>
+
+    <h3>1. Azure Active Directory (AAD) Logs</h3>
+    <ul>
+        <li><strong>Sign-in Logs:</strong> Detect unauthorized logins, MFA bypass attempts, and suspicious geolocations.</li>
+        <li><strong>Audit Logs:</strong> Track changes to user roles, group memberships, and authentication policies.</li>
+        <li><strong>Conditional Access Logs:</strong> Identify policy violations and failed access attempts.</li>
+    </ul>
+
+    <h3>2. Microsoft Defender for Cloud Logs</h3>
+    <ul>
+        <li><strong>Security Alerts:</strong> Send only **high and medium severity** alerts to reduce log noise.</li>
+        <li><strong>Recommendations:</strong> Forward only **critical misconfiguration alerts** for compliance monitoring.</li>
+    </ul>
+
+    <h3>3. Azure Monitor Activity Logs</h3>
+    <ul>
+        <li><strong>Administrative Activity:</strong> Track changes to resources, RBAC, and permissions.</li>
+        <li><strong>Security Events:</strong> Monitor suspicious API calls, unauthorized deletions, and audit failures.</li>
+    </ul>
+
+    <h3>4. Azure Sentinel Incident Logs</h3>
+    <ul>
+        <li><strong>Filtered Incidents:</strong> Only send **confirmed threats** rather than all security events.</li>
+        <li><strong>Custom Rules:</strong> Define **specific alert criteria** to avoid excessive log ingestion.</li>
+    </ul>
+
+    <h3>5. Azure Network Security Group (NSG) Flow Logs</h3>
+    <ul>
+        <li><strong>Traffic Logs:</strong> Monitor **unusual outbound connections** instead of all flow logs.</li>
+        <li><strong>Threat-Based Filtering:</strong> Send logs **only from high-risk assets** to reduce volume.</li>
+    </ul>
+
+    <h2>Critical Office 365 Logs to Send to SIEM</h2>
+
+    <h3>1. Unified Audit Logs (UAL)</h3>
+    <ul>
+        <li><strong>Exchange Online:</strong> Track email forwarding rules, shared mailbox access, and phishing attempts.</li>
+        <li><strong>SharePoint & OneDrive:</strong> Monitor file downloads, external sharing, and permission changes.</li>
+        <li><strong>Teams & Collaboration:</strong> Log administrative changes, guest user activities, and file transfers.</li>
+    </ul>
+
+    <h3>2. Microsoft Defender for Office 365 Logs</h3>
+    <ul>
+        <li><strong>Email Protection Logs:</strong> Capture phishing detections, malware quarantines, and spoofing attempts.</li>
+        <li><strong>Threat Intelligence Logs:</strong> Monitor attack trends and targeted threats.</li>
+    </ul>
+
+    <h3>3. Microsoft Intune & Endpoint Logs</h3>
+    <ul>
+        <li><strong>Device Compliance Logs:</strong> Ensure only compliant devices access corporate resources.</li>
+        <li><strong>Application Install Logs:</strong> Detect unauthorized or risky application installations.</li>
+    </ul>
+
+    <h2>Techniques to Optimize Egress Costs</h2>
+
+    <h3>1. Filter & Aggregate Logs Before Sending</h3>
+    <ul>
+        <li><strong>Use Azure Monitor & Log Analytics:</strong> Store raw logs in **Log Analytics** and only forward **critical events** to the SIEM.</li>
+        <li><strong>Enable Custom Log Queries:</strong> Extract relevant security events using **KQL (Kusto Query Language).**</li>
+        <li><strong>Batch Processing:</strong> Instead of real-time ingestion, send logs in scheduled **batches** to lower API call costs.</li>
+    </ul>
+
+    <h3>2. Use Microsoft Sentinel as an Intermediate SIEM</h3>
+    <ul>
+        <li><strong>Process logs in Sentinel first:</strong> Perform initial **correlation and filtering** in **Azure Sentinel** before exporting to an external SIEM.</li>
+        <li><strong>Use Sentinel's Free Tier Data:</strong> Retain **Azure Activity Logs** and **Security Alerts** in Sentinel's free tier instead of duplicating in a third-party SIEM.</li>
+    </ul>
+
+    <h3>3. Store Raw Logs in Cost-Effective Storage</h3>
+    <ul>
+        <li><strong>Archive Low-Priority Logs:</strong> Move **non-critical logs** to **Azure Blob Storage** instead of sending them to a SIEM.</li>
+        <li><strong>Use Hot/Cold Storage Tiers:</strong> Retain frequently accessed logs in **hot storage** and move historical data to **cold storage** for cost savings.</li>
+    </ul>
+
+    <h3>4. Optimize Log Collection with API & Agents</h3>
+    <ul>
+        <li><strong>Use Microsoft Graph Security API:</strong> Instead of **pulling** all logs, use event-based **webhooks** to send only high-priority alerts.</li>
+        <li><strong>Deploy Azure Arc:</strong> Collect logs **locally** and forward **only relevant logs** to reduce bandwidth costs.</li>
+    </ul>
+
+    <h3>5. Prioritize High-Value Data Sources</h3>
+    <ul>
+        <li><strong>Reduce Log Duplication:</strong> Avoid sending the same log data from multiple sources.</li>
+        <li><strong>Exclude Low-Risk Events:</strong> Filter out **informational logs** that provide minimal security value.</li>
+        <li><strong>Set Log Retention Policies:</strong> Adjust **log retention periods** to optimize storage and cost.</li>
+    </ul>
+
+    <h2>Conclusion</h2>
+    <p>By strategically selecting **high-value logs** and implementing **cost-saving techniques**, organizations can maintain effective security monitoring while optimizing SIEM ingestion costs.</p>
+
+</body>
+</html>
