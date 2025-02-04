@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Security Risks</title>
+    <title>Crypto Security Risks & Mitigation</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -14,23 +14,75 @@
         h2 {
             color: green;
         }
+        h3 {
+            color: darkgreen;
+        }
         p {
+            color: #333;
+        }
+        ul {
             color: #333;
         }
     </style>
 </head>
 <body>
 
-    <h2>Crypto Security Risks</h2>
+    <h2>Crypto Security Risks & Mitigation Strategies</h2>
 
     <h2>Smart Contract Vulnerabilities</h2>
-    <p>Smart contracts, once deployed, are immutable, making coding errors and vulnerabilities permanent risks. Exploits such as reentrancy attacks, integer overflows, and logic flaws can lead to the loss of funds.</p>
+    <p>Smart contracts, once deployed, are immutable, meaning any coding errors or vulnerabilities remain permanent. Common risks include:</p>
+    
+    <h3>Common Vulnerabilities:</h3>
+    <ul>
+        <li><strong>Reentrancy Attacks:</strong> An attacker exploits an external call in a contract to repeatedly withdraw funds before the balance updates.</li>
+        <li><strong>Integer Overflow/Underflow:</strong> Poorly managed numerical calculations can result in unintended values, leading to loss of funds.</li>
+        <li><strong>Logic Errors:</strong> Flaws in contract logic can lead to exploits such as unauthorized fund transfers.</li>
+    </ul>
+
+    <h3>Mitigation Strategies:</h3>
+    <ul>
+        <li><strong>Code Audits:</strong> Conduct thorough security audits with reputable firms before deploying a contract.</li>
+        <li><strong>Use Established Libraries:</strong> Leverage secure libraries such as OpenZeppelin to reduce the risk of vulnerabilities.</li>
+        <li><strong>Implement Reentrancy Guards:</strong> Use the <code>checks-effects-interactions</code> pattern and reentrancy guards to prevent recursive calls.</li>
+        <li><strong>Limit Contract Permissions:</strong> Minimize the contract’s privileges and access controls to reduce exploit risk.</li>
+    </ul>
 
     <h2>Private Key Security</h2>
-    <p>Private keys grant full control over crypto assets. Weak storage practices, phishing attacks, malware, and social engineering can lead to unauthorized access and fund theft.</p>
+    <p>Private keys control access to crypto assets. Losing a key or exposing it to attackers results in irreversible losses.</p>
+
+    <h3>Common Risks:</h3>
+    <ul>
+        <li><strong>Phishing Attacks:</strong> Attackers trick users into revealing private keys or seed phrases through fake websites or emails.</li>
+        <li><strong>Malware & Keyloggers:</strong> Malicious software can record keystrokes and steal credentials.</li>
+        <li><strong>Poor Storage Practices:</strong> Storing private keys in plain text files, cloud storage, or insecure locations can lead to theft.</li>
+    </ul>
+
+    <h3>Mitigation Strategies:</h3>
+    <ul>
+        <li><strong>Use Hardware Wallets:</strong> Store private keys offline in hardware wallets like Ledger or Trezor.</li>
+        <li><strong>Enable Multi-Factor Authentication (MFA):</strong> Use 2FA for exchanges and wallets to add an extra security layer.</li>
+        <li><strong>Beware of Phishing:</strong> Verify URLs and avoid clicking suspicious links or downloading unknown attachments.</li>
+        <li><strong>Secure Backup Storage:</strong> Store seed phrases in a fireproof, offline location such as a safe.</li>
+    </ul>
 
     <h2>Exchange Hacks</h2>
-    <p>Cryptocurrency exchanges are prime targets for hackers. Poor security practices, insider threats, and vulnerabilities in centralized exchanges have led to significant losses of digital assets.</p>
+    <p>Cryptocurrency exchanges are frequent targets for hackers due to the high concentration of funds.</p>
+
+    <h3>Common Risks:</h3>
+    <ul>
+        <li><strong>Centralized Control:</strong> Most exchanges hold users' private keys, making them a single point of failure.</li>
+        <li><strong>Insider Threats:</strong> Employees or compromised personnel can leak sensitive data.</li>
+        <li><strong>Poor Security Practices:</strong> Weak encryption, lack of cold storage, and outdated security protocols increase vulnerabilities.</li>
+    </ul>
+
+    <h3>Mitigation Strategies:</h3>
+    <ul>
+        <li><strong>Use Reputable Exchanges:</strong> Choose exchanges with strong security measures, cold storage, and insurance policies.</li>
+        <li><strong>Withdraw to a Private Wallet:</strong> Store long-term holdings in private wallets instead of leaving them on exchanges.</li>
+        <li><strong>Monitor Exchange Security Practices:</strong> Ensure the exchange implements 2FA, withdrawal whitelisting, and account monitoring.</li>
+        <li><strong>Diversify Assets:</strong> Avoid keeping all funds in one exchange to minimize risk exposure.</li>
+    </ul>
 
 </body>
 </html>
+
