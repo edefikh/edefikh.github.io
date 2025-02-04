@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOC 2 & CMMC 2.0 Endpoint Security Checklist</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .section {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-left: 5px solid #007bff;
+            background: #f9f9f9;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            padding: 8px 0;
+        }
+        input[type="checkbox"] {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SOC 2 & CMMC 2.0 Endpoint Security Checklist</h1>
+        
+        <div class="section">
+            <h2>1. User Account & Access Management</h2>
+            <ul>
+                <li><input type="checkbox"> Disable local admin accounts</li>
+                <li><input type="checkbox"> Enforce least privilege access</li>
+                <li><input type="checkbox"> Enable and enforce Multi-Factor Authentication (MFA)</li>
+                <li><input type="checkbox"> Disable Guest Accounts</li>
+                <li><input type="checkbox"> Enable FileVault encryption (Mac)</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>2. Device Hardening & Security Configurations</h2>
+            <ul>
+                <li><input type="checkbox"> Enable BitLocker (Windows) or FileVault (Mac)</li>
+                <li><input type="checkbox"> Disable Remote Desktop Protocol (RDP) if not needed</li>
+                <li><input type="checkbox"> Enforce strong password policies</li>
+                <li><input type="checkbox"> Disable USB ports for unauthorized devices</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>3. Endpoint Monitoring & Logging</h2>
+            <ul>
+                <li><input type="checkbox"> Enable Windows Event Logging</li>
+                <li><input type="checkbox"> Configure audit policies</li>
+                <li><input type="checkbox"> Enable macOS Unified Logging</li>
+                <li><input type="checkbox"> Monitor for unauthorized PowerShell scripts</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>4. Patch Management & System Updates</h2>
+            <ul>
+                <li><input type="checkbox"> Enable automatic updates for OS & applications</li>
+                <li><input type="checkbox"> Apply critical security patches immediately</li>
+                <li><input type="checkbox"> Update third-party software regularly</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>5. Application Security & Control</h2>
+            <ul>
+                <li><input type="checkbox"> Remove unnecessary applications</li>
+                <li><input type="checkbox"> Enable AppLocker or WDAC (Windows)</li>
+                <li><input type="checkbox"> Allow only signed applications (Mac)</li>
+                <li><input type="checkbox"> Block macros in Office documents</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>6. Network Security & Remote Access</h2>
+            <ul>
+                <li><input type="checkbox"> Enable Windows Defender Firewall</li>
+                <li><input type="checkbox"> Disable Bluetooth & Wi-Fi auto-connect</li>
+                <li><input type="checkbox"> Restrict VPN access to authorized users</li>
+                <li><input type="checkbox"> Use DNS filtering solutions</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>7. Endpoint Detection & Response (EDR)</h2>
+            <ul>
+                <li><input type="checkbox"> Enable Windows Defender ATP or third-party EDR</li>
+                <li><input type="checkbox"> Configure real-time threat protection</li>
+                <li><input type="checkbox"> Enable tamper protection</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>8. Data Protection & Backup</h2>
+            <ul>
+                <li><input type="checkbox"> Enable OneDrive or Time Machine backups</li>
+                <li><input type="checkbox"> Enforce Data Loss Prevention (DLP) policies</li>
+                <li><input type="checkbox"> Store backups securely in multiple locations</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>9. Incident Response & Reporting</h2>
+            <ul>
+                <li><input type="checkbox"> Define incident response procedures</li>
+                <li><input type="checkbox"> Configure alerts for security incidents</li>
+                <li><input type="checkbox"> Regularly test incident response plans</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>10. Compliance & Audit Readiness</h2>
+            <ul>
+                <li><input type="checkbox"> Maintain audit logs for at least 12 months</li>
+                <li><input type="checkbox"> Perform regular security assessments</li>
+                <li><input type="checkbox"> Ensure all configurations align with SOC 2 & CMMC 2.0</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
