@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloudflare Zero Trust - Web App Exposure Guide</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f4f4f4;
+            line-height: 1.6;
+        }
+        h2 {
+            color: green;
+        }
+        pre {
+            background: #333;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        code {
+            color: #ffcc00;
+        }
+    </style>
+</head>
+<body>
+    <h1>Setting Up Cloudflare Zero Trust (Cloudflare Tunnel)</h1>
+    
+    <h2>1️⃣ Sign Up & Set Up Cloudflare</h2>
+    <p>
+        - <a href="https://dash.cloudflare.com/" target="_blank">Create a Cloudflare Account</a>.<br>
+        - Add your domain to Cloudflare.<br>
+        - If you don’t have a domain, use a free one from Freenom.
+    </p>
+
+    <h2>2️⃣ Install Cloudflare Tunnel (Cloudflared)</h2>
+    <p>Run the following commands to install <code>cloudflared</code>:</p>
+    <pre><code>wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64
+chmod +x cloudflared-linux-amd64
+sudo mv cloudflared-linux-amd64 /usr/local/bin/cloudflared</code></pre>
+    
+    <h2>3️⃣ Authenticate Cloudflare Tunnel</h2>
+    <p>Run the authentication command:</p>
+    <pre><code>cloudflared tunnel login</code></pre>
+    <p>This will open a browser to authenticate your Cloudflare account.</p>
+
+    <h2>4️⃣ Create a Cloudflare Tunnel</h2>
+    <p>Run the following command to create the tunnel:</p>
+    <pre><code>cloudflared tunnel create my-tunnel</code></pre>
+    
+    <h2>5️⃣ Configure Tunnel to Forward Traffic</h2>
+    <p>Create the configuration file:</p>
+    <pre><code>mkdir -p ~/.cloudflared
+nano ~/.cloudflared/config.yml</code></pre>
+    <p>Add this content:</p>
+    <pre><code>tunnel: my-tunnel
+credentials-file: /root/.cloudflared/my-tunnel.json
+
+ingress:
+  - hostname: myapp.example.com
+    service: http://localhost:5000
+  - service: http_status:404</code></pre>
+
+    <h2>6️⃣ Run the Cloudflare Tunnel</h2>
+    <p>Start the tunnel with:</p>
+    <pre><code>cloudflared tunnel run my-tunnel</code></pre>
+    <p>Your app is now available at: <code>https://myapp.example.com</code></p>
+
+    <h2>✅ Benefits of Cloudflare Zero Trust</h2>
+    <ul>
+        <li>No Port Forwarding Required</li>
+        <li>Free SSL/TLS</li>
+        <li>Access Control</li>
+        <li>DDoS Protection</li>
+        <li>Improved Performance</li>
+    </ul>
+
+    <h2>🛠️ Optional: Set Up Cloudflare Access</h2>
+    <p>
+        1. Go to Cloudflare Dashboard → Zero Trust.<br>
+        2. Navigate to Access > Applications → Add Application.<br>
+        3. Select Self-hosted → Enter <code>myapp.example.com</code>.<br>
+        4. Configure authentication (Google, GitHub, OTP, etc.).<br>
+        5. Save and deploy.
+    </p>
+
+    <h2>🚀 Final Thoughts</h2>
+    <p>Cloudflare Zero Trust is a secure way to expose your app without opening ports.</p>
+</body>
+</html>
