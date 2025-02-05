@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azure CLI Security Evaluation Scripts</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        h2 {
+            color: green;
+        }
+        pre {
+            background: #f4f4f4;
+            padding: 10px;
+            border-left: 5px solid green;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Azure CLI Security Evaluation Scripts</h1>
+
+    <h2>1️⃣ Check Unrestricted NSG Rules (Inbound/Outbound)</h2>
+    <p><strong>Why?</strong> Open NSG rules (e.g., allowing <code>0.0.0.0/0</code>) expose resources to potential attacks.</p>
+    <pre>
+#!/bin/bash
+echo "Checking for NSG rules with unrestricted access (0.0.0.0/0)..."
+
+az network nsg rule list --query "[?access=='Allow' && (sourceAddressPrefix=='*' || sourceAddressPrefix=='0.0.0.0/0')]" -o table
+    </pre>
+
+    <h2>2️⃣ List Publicly Exposed VMs</h2>
+    <p><strong>Why?</strong> Public IPs on VMs increase attack surface.</p>
+    <pre>
+#!/bin/bash
+echo "Listing all VMs with public IPs..."
+
+az vm list-ip-addresses --query "[].{VM:name, PublicIP:virtualMachine.network.publicIpAddresses[0].ipAddress}" -o table
+    </pre>
+
+    <h2>3️⃣ Check for Storage Accounts with Public Access</h2>
+    <p><strong>Why?</strong> Public access to storage accounts can lead to data leaks.</p>
+    <pre>
+#!/bin/bash
+echo "Checking for publicly accessible storage accounts..."
+
+az storage account list --query "[?allowBlobPublicAccess==true].[name]" -o table
+    </pre>
+
+    <h2>4️⃣ Ensure MFA is Enabled for All Users</h2>
+    <p><strong>Why?</strong> Multi-factor authentication (MFA) prevents unauthorized access.</p>
+    <pre>
+#!/bin/bash
+echo "Checking Azure AD users for MFA status..."
+
+az ad user list --query "[?strongAuthenticationMethods==null].{User:userPrincipalName}" -o table
+    </pre>
+
+    <h2>5️⃣ Identify Unused Service Principal Credentials</h2>
+    <p><strong>Why?</strong> Old or unused credentials are security risks.</p>
+    <pre>
+#!/bin/bash
+echo "Checking for unused service principal credentials..."
+
+az ad app credential list --id <APP_ID> --query "[?endDateTime<='$(date -I)' && startDateTime<='$(date -I)']" -o table
+    </pre>
+
+    <h2>6️⃣ List Expiring Certificates in Key Vault</h2>
+    <p><strong>Why?</strong> Expiring certificates can lead to service disruptions.</p>
+    <pre>
+#!/bin/bash
+echo "Checking for expiring certificates in Azure Key Vault..."
+
+az keyvault certificate list --vault-name <KEYVAULT_NAME> --query "[?attributes.expires<=`$(date -d '+30 days' --iso-8601=seconds)`].{Name:name, Expiry:attributes.expires}" -o table
+    </pre>
+
+    <h2>7️⃣ Check for Deprecated TLS Versions (TLS 1.0/1.1)</h2>
+    <p><strong>Why?</strong> Older TLS versions are insecure.</p>
+    <pre>
+#!/bin/bash
+echo "Checking for App Services using deprecated TLS versions..."
+
+az webapp config show --query "[?minTlsVersion=='1.0' || minTlsVersion=='1.1'].{App:name, TLS:minTlsVersion}" -o table
+    </pre>
+
+    <h2>8️⃣ Find Unencrypted Managed Disks</h2>
+    <p><strong>Why?</strong> Encryption protects data from unauthorized access.</p>
+    <pre>
+#!/bin/bash
+echo "Checking for unencrypted managed disks..."
+
+az disk list --query "[?encryption.type=='None'].{Disk:name, ResourceGroup:resourceGroup}" -o table
+    </pre>
+
+    <h2>9️⃣ Identify Azure SQL Databases Without Auditing</h2>
+    <p><strong>Why?</strong> Auditing helps track suspicious activity.</p>
+    <pre>
+#!/bin/bash
+echo "Checking for Azure SQL databases without auditing enabled..."
+
+az sql db list --query "[?auditSettings.state=='Disabled']" -o table
+    </pre>
+
+    <h2>🔟 Find Users with Excessive Azure AD Roles</h2>
+    <p><strong>Why?</strong> Excess permissions increase security risks.</p>
+    <pre>
+#!/bin/bash
+echo "Checking Azure AD users with high privilege roles..."
+
+az role assignment list --query "[?roleDefinitionName=='Owner' || roleDefinitionName=='Contributor'].{User:principalName, Role:roleDefinitionName}" -o table
+    </pre>
+
+</body>
+</html>
