@@ -114,6 +114,24 @@ echo "Checking Azure AD users with high privilege roles..."
 
 az role assignment list --query "[?roleDefinitionName=='Owner' || roleDefinitionName=='Contributor'].{User:principalName, Role:roleDefinitionName}" -o table
     </pre>
+    
+    <pre>
+#!/bin/bash
+echo "List All Azure Resources..."
 
+az resource list --output table   
+    </pre>
+    <pre>
+#!/bin/bash
+echo "Check Network Security Groups (NSG) Rules..."
+
+az network nsg list --output table
+    </pre>
+    <pre>
+#!/bin/bash
+echo "List All User Roles and Permissions..."
+
+az role assignment list --all --output table
+    </pre>
 </body>
 </html>
