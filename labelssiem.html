@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIEM Integration for Monitoring Classified Data on Azure Using Perch SIEM</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        h2 {
+            color: green;
+        }
+        h3 {
+            color: darkgreen;
+        }
+        p, ul {
+            color: #333;
+        }
+        ul {
+            list-style-type: square;
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>SIEM Integration for Monitoring Classified Data on Azure Using Perch SIEM</h2>
+
+    <p>Integrating <strong>Perch SIEM</strong> with <strong>Azure</strong> enables real-time monitoring, logging, and detection of security threats to classified data. This guide covers key logs, integration steps, and cost-saving techniques.</p>
+
+    <h2>1. Why Integrate Perch SIEM with Azure?</h2>
+    <ul>
+        <li><strong>Centralized Security Visibility:</strong> Aggregate logs from Azure AD, Microsoft Purview, and AIP.</li>
+        <li><strong>Threat Detection:</strong> Identify unauthorized access and data exfiltration attempts.</li>
+        <li><strong>Compliance & Auditing:</strong> Meet ISO 27001, SOC 2, GDPR, and HIPAA requirements.</li>
+        <li><strong>Incident Response Automation:</strong> Trigger alerts and automated remediation for policy violations.</li>
+    </ul>
+
+    <h2>2. Critical Azure Logs to Send to Perch SIEM</h2>
+
+    <h3>🔹 Azure Information Protection (AIP) Logs</h3>
+    <ul>
+        <li>Monitor classified data access and movement.</li>
+        <li>Track file classification, label changes, and policy enforcement violations.</li>
+        <li>Detect unauthorized removal of classification labels.</li>
+    </ul>
+
+    <h3>🔹 Microsoft Purview Compliance Logs</h3>
+    <ul>
+        <li>Monitor sensitive data governance and protection policies.</li>
+        <li>Track DLP (Data Loss Prevention) violations and external sharing attempts.</li>
+        <li>Detect employees trying to send "Highly Confidential" data externally.</li>
+    </ul>
+
+    <h3>🔹 Azure AD Sign-In & Audit Logs</h3>
+    <ul>
+        <li>Monitor identity-based security events related to classified data access.</li>
+        <li>Track failed logins, MFA bypass attempts, and suspicious geolocation logins.</li>
+        <li>Detect unauthorized users accessing classified files.</li>
+    </ul>
+
+    <h3>🔹 Microsoft Defender for Cloud (MDC) Logs</h3>
+    <ul>
+        <li>Identify security threats & vulnerabilities in Azure workloads.</li>
+        <li>Track suspicious API access and anomalous data access patterns.</li>
+        <li>Detect unusual spikes in classified data downloads.</li>
+    </ul>
+
+    <h2>3. Steps to Integrate Perch SIEM with Azure</h2>
+
+    <h3>Step 1: Deploy Perch SIEM in Azure</h3>
+    <ul>
+        <li>Deploy <strong>Perch Cloud SIEM</strong> in Azure Marketplace.</li>
+        <li>Use <strong>Perch’s on-prem agent</strong> and forward logs to Azure SIEM.</li>
+        <li>Enable <strong>Perch Collector VM</strong> for collecting Azure logs.</li>
+    </ul>
+
+    <h3>Step 2: Connect Azure Logs to Perch SIEM</h3>
+    <ul>
+        <li>Use <strong>Azure Monitor & Log Analytics Workspace</strong> to forward logs.</li>
+        <li>Enable <strong>Azure Event Hub</strong> to send security events to Perch SIEM.</li>
+        <li>Configure <strong>Syslog or API integrations</strong> for AIP & Purview logs.</li>
+    </ul>
+
+    <h3>Step 3: Configure SIEM Log Forwarding</h3>
+    <ul>
+        <li>Set up log forwarding rules for:
+            <ul>
+                <li>Classified file access logs from AIP.</li>
+                <li>DLP alerts from Microsoft Purview.</li>
+                <li>User authentication logs from Azure AD.</li>
+            </ul>
+        </li>
+        <li>Use <strong>Perch Threat Intelligence (TI) Feeds</strong> for correlation.</li>
+    </ul>
+
+    <h3>Step 4: Implement Security Rules & Threat Detection</h3>
+    <ul>
+        <li>Create SIEM correlation rules for:
+            <ul>
+                <li>Multiple failed logins + classified data access.</li>
+                <li>Download of large volumes of confidential files.</li>
+                <li>DLP violations related to unauthorized file sharing.</li>
+            </ul>
+        </li>
+        <li>Configure automated responses in <strong>Perch SOAR</strong> (Security Orchestration & Automated Response).</li>
+    </ul>
+
+    <h3>Step 5: Enable Incident Response & Alerting</h3>
+    <ul>
+        <li>Configure real-time SIEM alerts for security teams.</li>
+        <li>Define incident response playbooks for classified data breaches.</li>
+        <li>Enable 24/7 monitoring & threat hunting with <strong>Perch Security Analysts</strong>.</li>
+    </ul>
+
+    <h2>4. Optimizing Perch SIEM for Cost-Effective Data Monitoring</h2>
+
+    <h3>💰 Reducing SIEM Ingestion Costs</h3>
+    <ul>
+        <li>Filter logs – Only send high-value logs (AIP, Purview, Azure AD).</li>
+        <li>Aggregate logs – Use <strong>Azure Log Analytics</strong> to preprocess data.</li>
+        <li>Use Hot/Cold Storage – Store non-critical logs in <strong>Azure Blob Storage</strong>.</li>
+    </ul>
+
+    <h3>🔄 Improving Detection Accuracy</h3>
+    <ul>
+        <li>Use <strong>ML-based anomaly detection</strong> in Perch.</li>
+        <li>Tune SIEM rules to avoid alert fatigue.</li>
+        <li>Implement risk-based prioritization for classified data events.</li>
+    </ul>
+
+    <h2>Conclusion</h2>
+    <p>By integrating <strong>Perch SIEM with Azure</strong>, organizations can achieve real-time security monitoring of classified data, ensuring compliance, threat detection, and automated response while optimizing log ingestion costs.</p>
+
+</body>
+</html>
