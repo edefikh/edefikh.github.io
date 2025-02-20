@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS Config Rules for SOC 2 Compliance</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        h2 {
+            color: green;
+            border-bottom: 2px solid green;
+            padding-bottom: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>✅ Identity & Access Management (IAM)</h2>
+    <table>
+        <tr>
+            <th>Rule Name</th>
+            <th>Description</th>
+            <th>SOC 2 Control</th>
+        </tr>
+        <tr>
+            <td>iam-user-mfa-enabled</td>
+            <td>Ensures all IAM users have MFA enabled</td>
+            <td>Access Control (CC6.1)</td>
+        </tr>
+        <tr>
+            <td>iam-policy-no-statements-with-admin-access</td>
+            <td>Prevents policies that grant full administrative privileges</td>
+            <td>Least Privilege (CC6.3)</td>
+        </tr>
+        <tr>
+            <td>iam-root-access-key-check</td>
+            <td>Ensures no root account access keys exist</td>
+            <td>IAM Security (CC6.1)</td>
+        </tr>
+    </table>
+
+    <h2>🌐 Networking & Security Groups</h2>
+    <table>
+        <tr>
+            <th>Rule Name</th>
+            <th>Description</th>
+            <th>SOC 2 Control</th>
+        </tr>
+        <tr>
+            <td>vpc-sg-open-only-to-authorized-ports</td>
+            <td>Ensures Security Groups only allow specific ports</td>
+            <td>Network Security (CC6.6)</td>
+        </tr>
+        <tr>
+            <td>restricted-ssh</td>
+            <td>Ensures Security Groups do not allow SSH (port 22) from 0.0.0.0/0</td>
+            <td>Network Security (CC6.6)</td>
+        </tr>
+    </table>
+
+    <h2>🔐 RDS PostgreSQL Security</h2>
+    <table>
+        <tr>
+            <th>Rule Name</th>
+            <th>Description</th>
+            <th>SOC 2 Control</th>
+        </tr>
+        <tr>
+            <td>rds-storage-encrypted</td>
+            <td>Ensures RDS instances have encryption enabled</td>
+            <td>Data Encryption (CC6.7)</td>
+        </tr>
+        <tr>
+            <td>rds-instance-public-access-check</td>
+            <td>Ensures RDS is <b>not</b> publicly accessible</td>
+            <td>Data Security (CC6.6)</td>
+        </tr>
+    </table>
+
+    <h2>🔄 ECS & Compute Security</h2>
+    <table>
+        <tr>
+            <th>Rule Name</th>
+            <th>Description</th>
+            <th>SOC 2 Control</th>
+        </tr>
+        <tr>
+            <td>ecs-task-definition-no-environment-credentials</td>
+            <td>Ensures ECS tasks do not have hardcoded credentials in environment variables</td>
+            <td>Secrets Management (CC6.1)</td>
+        </tr>
+        <tr>
+            <td>ecs-task-definitions-use-iam-roles</td>
+            <td>Ensures ECS tasks use IAM roles instead of hardcoded access keys</td>
+            <td>Least Privilege (CC6.3)</td>
+        </tr>
+    </table>
+
+    <h2>📜 Logging, Monitoring & Compliance</h2>
+    <table>
+        <tr>
+            <th>Rule Name</th>
+            <th>Description</th>
+            <th>SOC 2 Control</th>
+        </tr>
+        <tr>
+            <td>cloudtrail-enabled</td>
+            <td>Ensures AWS CloudTrail is enabled in all regions</td>
+            <td>Audit Logging (CC6.8)</td>
+        </tr>
+        <tr>
+            <td>cloudtrail-log-file-validation-enabled</td>
+            <td>Ensures CloudTrail logs cannot be modified</td>
+            <td>Data Integrity (CC6.8)</td>
+        </tr>
+    </table>
+
+    <h2>🛡️ CI/CD & GitHub Security</h2>
+    <table>
+        <tr>
+            <th>Rule Name</th>
+            <th>Description</th>
+            <th>SOC 2 Control</th>
+        </tr>
+        <tr>
+            <td>codebuild-project-environment-variables-check</td>
+            <td>Ensures CodeBuild does not have plaintext secrets in environment variables</td>
+            <td>Secrets Management (CC6.1)</td>
+        </tr>
+        <tr>
+            <td>codepipeline-artifact-encryption</td>
+            <td>Ensures AWS CodePipeline artifacts are encrypted with KMS</td>
+            <td>Data Encryption (CC6.7)</td>
+        </tr>
+    </table>
+
+    <h2>🚀 Next Steps for SOC 2 Readiness</h2>
+    <ul>
+        <li>✅ Enable these <b>AWS Config Rules</b> to continuously monitor compliance.</li>
+        <li>✅ Use <b>AWS Security Hub</b> to aggregate findings from AWS Config, GuardDuty, and CloudTrail.</li>
+        <li>✅ Automate remediation with <b>AWS Systems Manager</b> or <b>Lambda functions</b>.</li>
+        <li>✅ Document findings in an <b>AWS Security Controls Matrix</b> for SOC 2 auditors.</li>
+    </ul>
+
+</div>
+
+</body>
+</html>
+
